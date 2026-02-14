@@ -4,6 +4,9 @@ import socket from "./lib/socket";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import FoodListing from "./pages/FoodListing";
+import DonorDashboard from "./pages/DonorDashboard";
+import NgoDashboard from "./pages/NgoDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   useEffect(() => {
@@ -43,6 +46,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/food" element={<FoodListing />} />
+        <Route path="/donor-dashboard" element={<DonorDashboard />} />
+        <Route path="/ngo-dashboard" element={<NgoDashboard />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
