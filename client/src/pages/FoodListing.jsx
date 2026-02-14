@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../lib/api";
 
@@ -13,23 +13,26 @@ const FoodListing = () => {
         description: ""
     });
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            navigate("/login"); // Redirect to login if no token
-            return;
-        }
-        fetchFoods();
-    }, []);
-
-    const fetchFoods = async () => {
+    const fetchFoods = useCallback(async () => {
         try {
             const res = await API.get("/food");
             setFoods(res.data);
         } catch (error) {
             console.error("Error fetching foods:", error);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/login"); // Redirect to login if no token
+            return;
+        }
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        fetchFoods();
+    }, [navigate, fetchFoods]);
+
+
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
