@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../lib/api";
 
 const FoodListing = () => {
+    const navigate = useNavigate();
     const [foods, setFoods] = useState([]);
     const [formData, setFormData] = useState({
         foodType: "",
@@ -12,6 +14,11 @@ const FoodListing = () => {
     });
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/login"); // Redirect to login if no token
+            return;
+        }
         fetchFoods();
     }, []);
 
