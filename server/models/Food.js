@@ -2,34 +2,26 @@ const mongoose = require("mongoose");
 
 const foodSchema = new mongoose.Schema(
     {
-        donorId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-        },
-        foodType: {
-            type: String,
-            required: true,
-        },
-        quantity: {
-            type: Number,
-            required: true,
-        },
-        preparationTime: {
-            type: Date,
-            required: true,
-        },
-        pickupLocation: {
-            type: String,
-            required: true,
-        },
-        description: {
-            type: String,
-        },
+        title: String,
+        quantity: String,
+        location: String,
+        description: String,
+
         status: {
             type: String,
             enum: ["Available", "Accepted", "Collected"],
             default: "Available",
+        },
+
+        donor: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+
+        acceptedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            default: null,
         },
     },
     { timestamps: true }

@@ -1,12 +1,23 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const connectDB = require("./config/db");
 
 dotenv.config();
 connectDB();
 
 const app = express();
+
+// Security Middleware
+app.use(helmet());
+app.use(
+    rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 100,
+    })
+);
 
 app.use(cors({
     origin: [
@@ -30,6 +41,14 @@ app.use("/api/notifications", notificationRoutes);
 
 app.get("/", (req, res) => {
     res.send("RescueBite API Running...");
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        message: err.message || "Server Error",
+    });
 });
 
 const PORT = process.env.PORT || 5000;

@@ -55,6 +55,24 @@ const FoodListings = () => {
         }
     };
 
+    const acceptFood = async (id) => {
+        try {
+            await API.put(`/food/${id}/accept`);
+            fetchFoods();
+        } catch (error) {
+            alert("Error accepting food");
+        }
+    };
+
+    const collectFood = async (id) => {
+        try {
+            await API.put(`/food/${id}/collect`);
+            fetchFoods();
+        } catch (error) {
+            alert("Error collecting food");
+        }
+    };
+
     return (
         <div className="max-w-4xl mx-auto space-y-8 p-6">
             <h1 className="text-3xl font-bold text-white">Food Listings</h1>
@@ -134,13 +152,32 @@ const FoodListings = () => {
                                 </div>
                                 <span
                                     className={`px-3 py-1 rounded-full text-xs font-semibold ${food.status === "available"
-                                            ? "bg-green-600 text-green-100"
-                                            : "bg-yellow-600 text-yellow-100"
+                                        ? "bg-green-600 text-green-100"
+                                        : "bg-yellow-600 text-yellow-100"
                                         }`}
                                 >
                                     {food.status || 'Available'}
                                 </span>
                             </div>
+                            <div className="mt-4 flex gap-2">
+                                {(!food.status || food.status === "Available") && (
+                                    <button
+                                        onClick={() => acceptFood(food._id)}
+                                        className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded transition-colors"
+                                    >
+                                        Accept
+                                    </button>
+                                )}
+                                {food.status === "Accepted" && (
+                                    <button
+                                        onClick={() => collectFood(food._id)}
+                                        className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded transition-colors"
+                                    >
+                                        Mark Collected
+                                    </button>
+                                )}
+                            </div>
+
                         </li>
                     ))}
                     {foods.length === 0 && (
@@ -148,7 +185,7 @@ const FoodListings = () => {
                     )}
                 </ul>
             </div>
-        </div>
+        </div >
     );
 };
 

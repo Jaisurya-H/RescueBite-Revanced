@@ -1,35 +1,50 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import FoodListings from "./pages/FoodListings";
+import DonorDashboard from "./pages/DonorDashboard";
+import NgoDashboard from "./pages/NgoDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gray-900 text-white">
-
-        {/* Navbar */}
-        <nav className="bg-gray-800 p-4 flex gap-6 text-blue-400 font-medium">
-          <Link to="/register" className="hover:text-blue-300">
-            Register
-          </Link>
-          <Link to="/" className="hover:text-blue-300">
-            Login
-          </Link>
-          <Link to="/food" className="hover:text-blue-300">
-            Food Listings
-          </Link>
-        </nav>
-
-        {/* Page Content */}
+        <Navbar />
         <div className="p-8">
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/food" element={<FoodListings />} />
+
+            <Route
+              path="/donor"
+              element={
+                <ProtectedRoute role="Donor">
+                  <DonorDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/ngo"
+              element={
+                <ProtectedRoute role="NGO">
+                  <NgoDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute role="Admin">
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </div>
-
       </div>
     </BrowserRouter>
   );
